@@ -16,7 +16,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(MainApp());
+  runApp(const MainApp());
 }
 
 class MainApp extends StatefulWidget {
@@ -41,7 +41,7 @@ class _MainAppState extends State<MainApp> {
           ElevatedButton(
               // trigger the authentication flow on button press
               onPressed: () {
-                signInWithGoogle();
+                signInWithGoogle(context);
               },
               child: Text("Sign In with Google ")),
           TextField(
@@ -91,7 +91,7 @@ Future<void> tryEmailPWSignIn(String emailAddress, String password) async {
  * 4. Create a new credential object using the tokens from GoogleSignInAuthentication.
  * 5. Once signed in, return the UserCredential object.
  */
-Future<UserCredential> signInWithGoogle() async {
+Future<UserCredential> signInWithGoogle(BuildContext context) async {
   // Trigger the authentication flow
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
   // Obtain the auth details from the request
@@ -102,6 +102,7 @@ Future<UserCredential> signInWithGoogle() async {
     accessToken: googleAuth?.accessToken,
     idToken: googleAuth?.idToken,
   );
+
   // Once signed in, return the UserCredential
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
